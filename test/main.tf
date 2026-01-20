@@ -1,26 +1,26 @@
-
-/*
- * TODO: complete these basic instantiations of the module, with the base purpose of
- * validating the syntax of module code automatically when pushed to version control.
- * One instance should use the minimum allowable set of inputs. The other should have
- * the full complement of inputs. You may also wish to include module outputs to
- * enforce the presence of module outputs.
- */
-
 module "minimal" {
   source = "../"
 
-  variable_name = "foo"
+  repo_name           = ""
+  ecsServiceRole_arn  = ""
+  ecsInstanceRole_arn = ""
+  cd_user_arn         = ""
 }
 
 module "full" {
   source = "../"
 
-  variable_name = "foo"
+  repo_name             = ""
+  ecsServiceRole_arn    = ""
+  ecsInstanceRole_arn   = ""
+  cd_user_arn           = ""
+  force_delete          = false
+  image_retention_count = 0
+  image_retention_tags  = []
 }
 
-output "an_output" {
-  value = module.minimal.output_name
+output "repo_url" {
+  value = module.minimal.repo_url
 }
 
 provider "aws" {
@@ -28,12 +28,12 @@ provider "aws" {
 }
 
 terraform {
-  required_version = ">= 1.0"
+  required_version = ">= 0.12"
 
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"
+      version = ">= 4.0.0, < 6.0.0"
     }
   }
 }
