@@ -21,7 +21,7 @@ variable "force_delete" {
 }
 
 variable "image_retention_count" {
-  type    = string
+  type    = number
   default = 0
 }
 
