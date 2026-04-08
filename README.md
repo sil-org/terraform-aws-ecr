@@ -19,7 +19,7 @@ module "ecr" {
   repo_name             = "${var.app_name}-${var.app_env}"
   ecsInstanceRole_arn   = "${data.terraform_remote_state.cluster.ecsInstanceRole_arn}"
   ecsServiceRole_arn    = "${data.terraform_remote_state.cluster.ecsServiceRole_arn}"
-  cd_user_arn           = "${data.terraform_remote_state.cluster.cd_user_arn}"
+  cd_principal_arn      = "${data.terraform_remote_state.cluster.cd_principal_arn}"
   force_delete          = true
   image_retention_count = 10
   image_retention_tags  = ["latest", "main", "develop"]

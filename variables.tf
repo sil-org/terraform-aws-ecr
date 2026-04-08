@@ -1,17 +1,25 @@
 variable "repo_name" {
-  type = string
+  description = <<-EOT
+    The name of the ECR repository. The repository name may container a maximum of 256 characters. The name must
+    start with a letter and can only contain lowercase letters, numbers, hyphens, underscores, periods and forward
+    slashes. Using a double forward slash isn't supported.
+  EOT
+  type        = string
 }
 
 variable "ecsServiceRole_arn" {
-  type = string
+  description = "The ECS service role for the cluster that will pull images from this repository."
+  type        = string
 }
 
 variable "ecsInstanceRole_arn" {
-  type = string
+  description = "The ECS instance role for the EC2 instance. This role will be given permission to pull images."
+  type        = string
 }
 
-variable "cd_user_arn" {
-  type = string
+variable "cd_principal_arn" {
+  description = "The ARN of the user or role that will be given push/pull permission for continuous deployment."
+  type        = string
 }
 
 variable "force_delete" {
@@ -21,11 +29,13 @@ variable "force_delete" {
 }
 
 variable "image_retention_count" {
-  type    = number
-  default = 0
+  description = "The number of images to retain. Used in the lifecycle policy. If 0, no policy is created."
+  type        = number
+  default     = 0
 }
 
 variable "image_retention_tags" {
-  type    = list(string)
-  default = ["latest"]
+  description = "Additional image tags to retain regardless of age. Used in the lifecycle policy."
+  type        = list(string)
+  default     = ["latest"]
 }

@@ -4,7 +4,7 @@ module "minimal" {
   repo_name           = ""
   ecsServiceRole_arn  = ""
   ecsInstanceRole_arn = ""
-  cd_user_arn         = ""
+  cd_principal_arn    = ""
 }
 
 module "full" {
@@ -13,7 +13,7 @@ module "full" {
   repo_name             = ""
   ecsServiceRole_arn    = ""
   ecsInstanceRole_arn   = ""
-  cd_user_arn           = ""
+  cd_principal_arn      = ""
   force_delete          = false
   image_retention_count = 0
   image_retention_tags  = []
