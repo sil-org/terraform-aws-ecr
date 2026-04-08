@@ -29,7 +29,7 @@ locals {
         Sid    = "CD push/pull"
         Effect = "Allow"
         Principal : {
-          AWS : var.cd_user_arn
+          AWS : var.cd_principal_arn
         },
         Action = [
           "ecr:PutImage",
