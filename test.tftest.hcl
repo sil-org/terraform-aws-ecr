@@ -12,7 +12,7 @@ run "test" {
   }
 
   assert {
-    condition     = !strcontains(aws_ecr_repository_policy.policy.policy, "ECS Pull Access")
+    condition     = !strcontains(aws_ecr_repository_policy.this.policy, "ECS Pull Access")
     error_message = "incorrect repo policy"
   }
 
@@ -24,7 +24,7 @@ run "include_instance_role" {
   }
 
   assert {
-    condition     = strcontains(aws_ecr_repository_policy.policy.policy, "ECS Pull Access")
+    condition     = strcontains(aws_ecr_repository_policy.this.policy, "ECS Pull Access")
     error_message = "incorrect repo policy"
   }
 }
