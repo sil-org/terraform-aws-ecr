@@ -7,14 +7,10 @@ variable "repo_name" {
   type        = string
 }
 
-variable "ecsServiceRole_arn" {
-  description = "The ECS service role for the cluster that will pull images from this repository."
-  type        = string
-}
-
-variable "ecsInstanceRole_arn" {
+variable "instance_role_arn" {
   description = "The ECS instance role for the EC2 instance. This role will be given permission to pull images."
   type        = string
+  default     = null
 }
 
 variable "cd_principal_arn" {

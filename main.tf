@@ -9,39 +9,40 @@ resource "aws_ecr_repository" "repo" {
 locals {
   repo_policy = jsonencode({
     Version = "2008-10-17"
-    Statement = [
-      {
-        Sid    = "ECS Pull Access"
-        Effect = "Allow"
-        Principal = {
-          AWS = [
-            var.ecsInstanceRole_arn,
-            var.ecsServiceRole_arn,
+    Statement = concat(
+      var.instance_role_arn != null ? [
+        {
+          Sid    = "ECS Pull Access"
+          Effect = "Allow"
+          Principal = {
+            AWS = var.instance_role_arn
+          },
+          Action = [
+            "ecr:GetDownloadUrlForLayer",
+            "ecr:BatchGetImage",
+            "ecr:BatchCheckLayerAvailability",
           ]
-        },
-        Action = [
-          "ecr:GetDownloadUrlForLayer",
-          "ecr:BatchGetImage",
-          "ecr:BatchCheckLayerAvailability",
-        ]
-      },
-      {
-        Sid    = "CD push/pull"
-        Effect = "Allow"
-        Principal : {
-          AWS : var.cd_principal_arn
-        },
-        Action = [
-          "ecr:PutImage",
-          "ecr:InitiateLayerUpload",
-          "ecr:UploadLayerPart",
-          "ecr:CompleteLayerUpload",
-          "ecr:GetDownloadUrlForLayer",
-          "ecr:BatchGetImage",
-          "ecr:BatchCheckLayerAvailability",
-        ]
-      }
-    ]
+        }
+      ] : [],
+      [
+        {
+          Sid    = "CD push/pull"
+          Effect = "Allow"
+          Principal : {
+            AWS : var.cd_principal_arn
+          },
+          Action = [
+            "ecr:PutImage",
+            "ecr:InitiateLayerUpload",
+            "ecr:UploadLayerPart",
+            "ecr:CompleteLayerUpload",
+            "ecr:GetDownloadUrlForLayer",
+            "ecr:BatchGetImage",
+            "ecr:BatchCheckLayerAvailability",
+          ]
+        }
+      ]
+    )
   })
 
   /*
@@ -84,12 +85,12 @@ locals {
   })
 }
 
-resource "aws_ecr_repository_policy" "policy" {
+resource "aws_ecr_repository_policy" "this" {
   repository = aws_ecr_repository.repo.name
   policy     = local.repo_policy
 }
 
-resource "aws_ecr_lifecycle_policy" "policy" {
+resource "aws_ecr_lifecycle_policy" "this" {
   count = var.image_retention_count > 0 ? 1 : 0
 
   repository = aws_ecr_repository.repo.name
